@@ -13,7 +13,7 @@ enum PointInfo {
 struct PointMap {
   width: usize,
   axes_to_point: HashMap<(usize, usize), PointInfo>,
-  indeces_to_axis: HashMap<usize, (usize, usize)>,
+  indices_to_axis: HashMap<usize, (usize, usize)>,
 }
 
 impl PointMap {
@@ -21,7 +21,7 @@ impl PointMap {
     PointMap {
       width: 0,
       axes_to_point: HashMap::new(),
-      indeces_to_axis: HashMap::new(),
+      indices_to_axis: HashMap::new(),
     }
   }
 
@@ -36,12 +36,12 @@ impl PointMap {
     let mut i = 0usize;
 
     for x in 0..self.width {
-      for y in 0..(self.width - x) {
+      for y in (0..(self.width - x)).rev() {
         let x = x + 1;
         let y = y + 1;
 
         self.axes_to_point.insert((x, y), PointInfo::Unknown(i));
-        self.indeces_to_axis.insert(i, (x, y));
+        self.indices_to_axis.insert(i, (x, y));
 
         i += 1;
       }
@@ -63,19 +63,20 @@ impl PointMap {
   }
 
   pub fn get_point_at(&self, idx: usize) -> Option<(usize, usize)> {
-    self.indeces_to_axis.get(&idx).cloned()
+    self.indices_to_axis.get(&idx).cloned()
   }
 
   fn calc_point(&self, x: usize, y: usize) -> Option<f64> {
+    let width = 2.0 + (self.width as f64);
     if x == 0 {
       let y = y as f64;
-      Some(10.0 - 2.5 * y)
+      Some(10.0 - 10.0 * y / width)
     } else if y == 0 {
       let x = x as f64;
-      Some(10.0 + 5.0 * x)
+      Some(10.0 + 20.0 * x / width)
     } else if y == (self.width + 2 - x) {
       let x = x as f64;
-      Some(30.0 * (x * f64::consts::PI / 8.0).sin())
+      Some(30.0 * (x * f64::consts::PI / (2.0 * width)).sin())
     } else {
       None
     }

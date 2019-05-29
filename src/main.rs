@@ -5,17 +5,9 @@ use mat_gen::generate_mat;
 use solver::solve;
 
 fn main() {
-    // 入力する行列式
-    /*let a = [[4.0, -1.0, 0.0], [-1.0, 4.0, -1.0], [0.0, -1.0, 4.0]];
-    let b = [
-        30.0 * f64::sin(f64::consts::PI / 4.0) + 30.0 * f64::sin(f64::consts::PI / 8.0) + 5.0,
-        22.5,
-        30.0 * f64::sin(3.0 * f64::consts::PI / 8.0)
-            + 30.0 * f64::sin(f64::consts::PI / 4.0)
-            + 20.0,
-    ];*/
-
-    let width = 70usize;
+    // A→B方向に並ぶ未知数の数をwidthで与える．
+    // width = 6だと，未知数の数はitems = 21となる．
+    let width = 6usize;
     let items = width * (width + 1) / 2;
 
     let (a, b) = generate_mat(width);

@@ -18,7 +18,6 @@ macro_rules! assert_opt {
 
 pub fn solve<T: AsRef<[f64]>>(a: &[T], b: &[f64], ans: &mut [f64]) -> Option<()> {
   solve_gauss(a, b, ans).or_else(|| {
-    eprintln!("Using an aternative solution");
     solve_cramer(a, b, ans)
   })
 }
@@ -122,6 +121,8 @@ fn det_n<T: AsRef<[f64]>>(a: &[T]) -> Option<f64> {
 }
 
 fn solve_cramer<T: AsRef<[f64]>>(a: &[T], b: &[f64], ans: &mut [f64]) -> Option<()> {
+  // クラメールの式による解法もあるが，あまり速くなはい．
+  
   // 正方行列であることを確認．
   assert_eq_opt!(a.len(), b.len());
   assert_eq_opt!(a.len(), a[0].as_ref().len());
@@ -152,9 +153,9 @@ fn solve_cramer<T: AsRef<[f64]>>(a: &[T], b: &[f64], ans: &mut [f64]) -> Option<
 }
 
 fn solve_gauss<T: AsRef<[f64]>>(a: &[T], b: &[f64], ans: &mut [f64]) -> Option<()> {
-  // 解法の一つとして，Gaussの消去法を用意した．
+  // 解法の一つとして，Gaussの消去法を採用した．
   // 一意解が求まらなくても単純化するようになってはいるが，
-  // その場合でもNoneを返す．また，非正方行列は想定していない．
+  // その場合でもNoneを返す．また，非正方行列は想定していない．（インデックスエラーを吐く）
 
   // 行の入れ替えを行うため，mutableなVec<Vec<f64>>に変換する．
   let mut a = a.iter().map(|v| v.as_ref().to_vec()).collect::<Vec<_>>();
