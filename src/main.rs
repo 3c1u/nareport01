@@ -4,8 +4,8 @@ mod nalgebra_solver;
 mod solver;
 use mat_gen::generate_mat;
 
-use nalgebra_solver::solve_na;
-// use solver::solve;
+// use nalgebra_solver::solve_na;
+use solver::solve;
 
 fn main() {
     // A→B方向に並ぶ未知数の数をwidthで与える．
@@ -29,6 +29,6 @@ fn main() {
      * 8.47user 0.04system 0:08.61elapsed 98%CPU (0avgtext+0avgdata 99384maxresident)k
      * 0inputs+0outputs (0major+26908minor)pagefaults 0swaps
      */
-    solve_na(&a, &b, &mut ans).expect("Can't solve");
+    solve(&a, &b, &mut ans).expect("Can't solve");
     println!("{:#?}", ans);
 }
